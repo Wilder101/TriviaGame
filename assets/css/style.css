@@ -3,3 +3,13 @@
 .btn {
     display: block;
 }
+
+h1, h2, h3, button {
+    margin: auto;
+    text-align: center;
+}
+
+#start-button {
+    width: 30%;
+    font-size: 30px;
+}
