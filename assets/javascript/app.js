@@ -3,7 +3,7 @@
 $(document).ready(function() {
 
     // Variables
-    let questionNumber = 5;             // Tracker for which question game is on
+    let questionNumber = 0;             // Tracker for which question game is on
     let numberOfCorrectAnswers = 0;     // Counter for player's number of correct answers
     let numberOfWrongAnswers = 0;       // Counter for player's number of wrong
     let timeRemaining = 30;             // Count down time remaining in question selection
@@ -13,24 +13,28 @@ $(document).ready(function() {
     let playGame = false;
     let startOver = false;
 
-
     // Array of trivia questions
     var questionDB = [
         {question: "What is the closest star to our own sun?",  
         answers: ["Alpha Centauri", "Proxima Centauri", "Bernards Star", "Ross 248"],
         correctAnswer: 1},
+
         {question: "What is the name for meteoroids that survive entry through the atmosphere and reach Earth’s surface?",  
         answers: ["Meteorites", "Meteoroids", "Meteors", "Perseids"],
         correctAnswer: 0},
+
         {question: "Which U.S. President made the first telephone call to the moon?",  
         answers: ["John F. Kennedy", "Lyndon B. Johnson", "Richard Nixon", "Ronald Regan"],
         correctAnswer: 2},
+
         {question: "In our solar system, which planet has the shortest day?",  
         answers: ["Mercury", "Earth", "Neptune", "Jupiter"],
         correctAnswer: 3},
+
         {question: "What is the farthest human-made object from planet Earth?",  
         answers: ["Voyager 1", "Voyager 2", "Pioneer 10", "Hubble Space Telescope"],
         correctAnswer: 0},
+        
         {question: "SpaceX was founded by what South African-born inventor?",  
         answers: ["Charlize Theron", "Elon Musk", "Nelson Mandela", "Allan Cormack"],
         correctAnswer: 1}
