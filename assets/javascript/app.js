@@ -64,42 +64,48 @@ $(document).ready(function() {
         // Handle answer selection once answer buttons are generated
         $(".answer-button").on("click", function() {
 
+            // Local variable for button's data-value
             var whichAnswerSelected = $(this).attr("data-value");
-            console.log(whichAnswerSelected);
-            console.log(questionDB[questionNumber].correctAnswer);
+            // console.log(whichAnswerSelected);
+            // console.log(questionDB[questionNumber].correctAnswer);
 
             // Check for winning round
             if (whichAnswerSelected == questionDB[questionNumber].correctAnswer) {
 
-                // TESTING
-                console.log("IF PASSED");
-
-                // We have a winner of this round
-                // BUILD DISPLAY IN #content for: empty(), then show congrats/yes/good guess
-                // Clear all content
+                // Clear all content and show time remaining
                 $("#content").empty();
-
-                // Show time remaining
                 showTimeRemaining();
 
                 // Just show Correct!
                 var correctDisplay = $("<h2>").addClass("p-1");
-                correctDisplay.html("Correct!");
+                correctDisplay.text("Correct!");
                 $("#content").append(correctDisplay);
                 // INCLUDE IMAGE LATER
 
-                // Update game state to next question or end game
-                updateGameState();
             }
             // Otherwise guess was a miss
             else {
-                // Show user what the correct answer was
-                // BUILD DISPLAY IN #content for: empty(), then show what was correct   ---- 34 SECONDS INTO DEMO VIDEO
 
-                // Update game state to next question or end game
-                updateGameState();
+                // Clear all content and show time remaining
+                $("#content").empty();
+                showTimeRemaining();
 
+                // Show incorrect
+                var incorrectDisplay = $("<h2>").addClass("p-1");
+                incorrectDisplay.html("Incorrect.");
+
+                // Add the correct answer
+                var theAnswerWas = $("<h3>").addClass("p-1");
+                let correctIndex = questionDB[questionNumber].correctAnswer;
+                theAnswerWas.html("The correct answer was: <br>" + questionDB[questionNumber].answers[correctIndex]);
+                incorrectDisplay.append(theAnswerWas);
+
+                $("#content").append(incorrectDisplay);
+                // INCLUDE IMAGE LATER
             }
+
+            // Update game state to next question or end game
+            updateGameState();
 
             // $("#content").append("Answer button selected");
 
