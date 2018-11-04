@@ -9,9 +9,13 @@ $(document).ready(function() {
     let timeRemaining = 30;             // Count down time remaining in question selection
 
     // Game state
-    let startUp = true;
-    let playGame = false;
-    let startOver = false;
+    // let startUp = true;
+    // let playGame = false;
+    // let startOver = false;
+
+    // Timing variables
+    let intervalID;                     // Holds setInterval that runs timer
+    let clockRunning;                   // Timer flag for countdown
 
     // Array of trivia questions
     var questionDB = [
@@ -34,7 +38,7 @@ $(document).ready(function() {
         {question: "What is the farthest human-made object from planet Earth?",  
         answers: ["Voyager 1", "Voyager 2", "Pioneer 10", "Hubble Space Telescope"],
         correctAnswer: 0},
-        
+
         {question: "SpaceX was founded by what South African-born inventor?",  
         answers: ["Charlize Theron", "Elon Musk", "Nelson Mandela", "Allan Cormack"],
         correctAnswer: 1}
@@ -100,12 +104,12 @@ $(document).ready(function() {
                 showTimeRemaining();
 
                 // Show incorrect
-                let incorrectDisplay = $("<h2>").addClass("p-1");
+                var incorrectDisplay = $("<h2>").addClass("p-1");
                 incorrectDisplay.html("Incorrect.");
 
                 // Add the correct answer
-                let theAnswerWas = $("<h3>").addClass("p-1");
-                let correctIndex = questionDB[questionNumber].correctAnswer;
+                var theAnswerWas = $("<h3>").addClass("p-1");
+                var correctIndex = questionDB[questionNumber].correctAnswer;
                 theAnswerWas.html("The correct answer was: <br>" + questionDB[questionNumber].answers[correctIndex]);
                 incorrectDisplay.append(theAnswerWas);
 
@@ -126,7 +130,7 @@ $(document).ready(function() {
         questionNumber++;
 
         // Check for end of game
-        if ( questionNumber >= questionDB.length - 1) {
+        if ( questionNumber >= questionDB.length) {
             
             // End of game;show results
             // On the final screen, show the number of correct answers, incorrect answers, and an option to restart the game (without reloading the page).
@@ -174,10 +178,15 @@ $(document).ready(function() {
         }
         // Game is to continue -- BE SURE TO INCLUDE A DELAY TIMER IF GAME IS TO CONTINUE, FIRST 
         else {
-            $("#content").empty();                  // Clear content
-            showTimeRemaining();                    // Show time remaining
-            showQuestion(questionNumber);           // Display next question
-            showPossibleAnswers(questionNumber);    // Show answer set
+
+            // Delay before next question -- five seconds
+            setTimeout(nextQuestion, 1000 * 5);
+            function nextQuestion() {
+                $("#content").empty();                  // Clear content
+                showTimeRemaining();                    // Show time remaining
+                showQuestion(questionNumber);           // Display next question
+                showPossibleAnswers(questionNumber);    // Show answer set
+            }
         }
     }; // End of updateGameState function
 
