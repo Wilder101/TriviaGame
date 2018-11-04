@@ -131,51 +131,56 @@ $(document).ready(function() {
 
         // Check for end of game
         if ( questionNumber >= questionDB.length) {
-            
-            // End of game;show results
-            // On the final screen, show the number of correct answers, incorrect answers, and an option to restart the game (without reloading the page).
-            $("#content").empty();                  // Clear content
 
-            // Show number of correct and incorrect answers
-            let showScoreResults = $("<h2>").addClass("p-1");
-            showScoreResults.html("Thank you for playing. <br><br>");
-            showScoreResults.append("Correct answers: " + numberOfCorrectAnswers + "<br>");
-            showScoreResults.append("Incorrect answers: " + numberOfWrongAnswers);
-            $("#content").append(showScoreResults);
-            
-            // Restart game and button
-            let restartButton = $("<button>");
-            restartButton.addClass("btn btn-lg btn-light");
-            restartButton.attr("type", "button");
-            restartButton.attr("id", "restart-button");
-            restartButton.text("Restart");
-            $("#content").append("<br><br><br>");
-            $("#content").append(restartButton);
+            // Delay before game finalization -- five seconds
+            setTimeout(wrapItUp, 1000 * 5);
+            function wrapItUp() {
 
-            // Restart the game event listener
-            $("#restart-button").on("click", function() {
+                // End of game;show results
+                // On the final screen, show the number of correct answers, incorrect answers, and an option to restart the game (without reloading the page).
+                $("#content").empty();                  // Clear content
 
-                // Reset game variables
-                questionNumber = 0;             // Tracker for which question game is on
-                numberOfCorrectAnswers = 0;     // Counter for player's number of correct answers
-                numberOfWrongAnswers = 0;       // Counter for player's number of wrong
-                timeRemaining = 30;             // Count down time remaining in question selection
+                // Show number of correct and incorrect answers
+                let showScoreResults = $("<h2>").addClass("p-1");
+                showScoreResults.html("Thank you for playing. <br><br>");
+                showScoreResults.append("Correct answers: " + numberOfCorrectAnswers + "<br>");
+                showScoreResults.append("Incorrect answers: " + numberOfWrongAnswers);
+                $("#content").append(showScoreResults);
+                
+                // Restart game and button
+                let restartButton = $("<button>");
+                restartButton.addClass("btn btn-lg btn-light");
+                restartButton.attr("type", "button");
+                restartButton.attr("id", "restart-button");
+                restartButton.text("Restart");
+                $("#content").append("<br><br><br>");
+                $("#content").append(restartButton);
 
-                // Clear all content
-                $("#content").empty();
+                // Restart the game event listener
+                $("#restart-button").on("click", function() {
 
-                // Show time remaining
-                showTimeRemaining();
+                    // Reset game variables
+                    questionNumber = 0;             // Tracker for which question game is on
+                    numberOfCorrectAnswers = 0;     // Counter for player's number of correct answers
+                    numberOfWrongAnswers = 0;       // Counter for player's number of wrong
+                    timeRemaining = 30;             // Count down time remaining in question selection
 
-                // Display first question
-                showQuestion(questionNumber);
+                    // Clear all content
+                    $("#content").empty();
 
-                // Show answer set
-                showPossibleAnswers(questionNumber);
+                    // Show time remaining
+                    showTimeRemaining();
 
-            }); // End start start button on click event
+                    // Display first question
+                    showQuestion(questionNumber);
 
-        }
+                    // Show answer set
+                    showPossibleAnswers(questionNumber);
+
+                }); // End start start button on click event
+            } // End of wrapItUp function
+        } // End check for end of game
+
         // Game is to continue -- BE SURE TO INCLUDE A DELAY TIMER IF GAME IS TO CONTINUE, FIRST 
         else {
 
@@ -189,6 +194,7 @@ $(document).ready(function() {
             }
         }
     }; // End of updateGameState function
+
 
     // On page load -- generate and show start button
     var startButton = $("<button>");
