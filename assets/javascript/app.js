@@ -51,31 +51,75 @@ $(document).ready(function() {
     function showPossibleAnswers(whichQuestion) {
 
         // Create answer buttons and dynamically display
-        for (let i = 0; i < questionDB.length; i++) {
+        for (let i = 0; i < questionDB[0].answers.length; i++) {
             var answerButton = $("<button>");
-            answerButton.addClass("btn btn-lg btn-light");
+            answerButton.addClass("btn btn-lg btn-light answer-button");
+            // answerButton.attr("id", "answer-button");
             answerButton.attr("type", "button");
-            let btnID = "btn-" + i;
-            answerButton.attr("id", btnID);
+            answerButton.attr("data-value", i);
             answerButton.text(questionDB[whichQuestion].answers[i]);
             $("#content").append(answerButton);
         }
 
+        // Handle answer selection once answer buttons are generated
+        $(".answer-button").on("click", function() {
 
+            var whichAnswerSelected = $(this).attr("data-value");
+            console.log(whichAnswerSelected);
+            console.log(questionDB[questionNumber].correctAnswer);
 
-        // <button type="button" class="btn btn-lg btn-light" id="btn-top"></button>
-        // <button type="button" class="btn btn-lg btn-light" id="btn-middle-top"></button>
-        // <button type="button" class="btn btn-lg btn-light" id="btn-middle-bottom"></button>
-        // <button type="button" class="btn btn-lg btn-light" id="btn-bottom"></button>
+            // Check for winning round
+            if (whichAnswerSelected == questionDB[questionNumber].correctAnswer) {
 
-        // // Show all possible answers
-        // $("#btn-top").text(questionDB[whichQuestion].answers[0]);
-        // $("#btn-middle-top").text(questionDB[whichQuestion].answers[1]);
-        // $("#btn-middle-bottom").text(questionDB[whichQuestion].answers[2]);
-        // $("#btn-bottom").text(questionDB[whichQuestion].answers[3]);
-    };
+                // TESTING
+                console.log("IF PASSED");
 
-    // On page load -- show start button
+                // We have a winner of this round
+                // BUILD DISPLAY IN #content for: empty(), then show congrats/yes/good guess
+                // Clear all content
+                $("#content").empty();
+
+                // Show time remaining
+                showTimeRemaining();
+
+                // Just show Correct!
+                var correctDisplay = $("<h2>").addClass("p-1");
+                correctDisplay.html("Correct!");
+                $("#content").append(correctDisplay);
+                // INCLUDE IMAGE LATER
+
+                // Update game state to next question or end game
+                updateGameState();
+            }
+            // Otherwise guess was a miss
+            else {
+                // Show user what the correct answer was
+                // BUILD DISPLAY IN #content for: empty(), then show what was correct   ---- 34 SECONDS INTO DEMO VIDEO
+
+                // Update game state to next question or end game
+                updateGameState();
+
+            }
+
+            // $("#content").append("Answer button selected");
+
+            // TESTING
+            // $("#content").empty();
+
+        }); // End handle answer selection on click event
+    } // End of showPossibleAnswers function
+
+    function updateGameState() {
+        // Update game state to next question
+        questionNumber++;
+
+        // Check for end of game
+        if ( questionNumber >= questionDB.length - 1) {
+            // END OF GAME; SHOW RESULTS
+        }
+    }; // End of updateGameState function
+
+    // On page load -- generate and show start button
     var startButton = $("<button>");
     startButton.addClass("btn btn-lg btn-light");
     startButton.attr("type", "button");
@@ -91,12 +135,13 @@ $(document).ready(function() {
         $("#content").empty();
 
         // Show time remaining
-        var timeDisplay = $("<h2>");
-        timeDisplay.addClass("p-1");
-        timeDisplay.html("Time Remaining: <span id='time-remaining'></span> Seconds");
-        $("#content").append(timeDisplay);
-        $("#content").append("<hr></hr>");
-        $("#time-remaining").text(timeRemaining);
+        showTimeRemaining();
+        // var timeDisplay = $("<h2>");
+        // timeDisplay.addClass("p-1");
+        // timeDisplay.html("Time Remaining: <span id='time-remaining'></span> Seconds");
+        // $("#content").append(timeDisplay);
+        // $("#content").append("<hr></hr>");
+        // $("#time-remaining").text(timeRemaining);
 
         // Display first question
         showQuestion(questionNumber);
@@ -104,12 +149,18 @@ $(document).ready(function() {
         // Show answer set
         showPossibleAnswers(questionNumber);
 
+    }); // End start start button on click event
 
+    // Show time remaining function
+    function showTimeRemaining() {
 
-    });
-
-
-
+        var timeDisplay = $("<h2>");
+        timeDisplay.addClass("p-1");
+        timeDisplay.html("Time Remaining: <span id='time-remaining'></span> Seconds");
+        $("#content").append(timeDisplay);
+        $("#content").append("<hr></hr>");
+        $("#time-remaining").text(timeRemaining);
+    }; // End ShowTimeRemaining function
 
 
 }); // End document.ready
