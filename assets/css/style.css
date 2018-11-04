@@ -9,7 +9,7 @@ h1, h2, h3, button {
     text-align: center;
 }
 
-#start-button {
+#start-button, #restart-button {
     width: 30%;
     font-size: 30px;
 }
