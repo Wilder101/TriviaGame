@@ -15,7 +15,7 @@ $(document).ready(function() {
 
     // Timing variables
     let intervalID;                     // Holds setInterval that runs timer
-    let clockRunning;                   // Timer flag for countdown
+    let clockRunning = false;           // Timer flag for countdown
 
     // Array of trivia questions
     var questionDB = [
@@ -74,8 +74,9 @@ $(document).ready(function() {
 
             // Local variable for button's data-value
             var whichAnswerSelected = $(this).attr("data-value");
-            // console.log(whichAnswerSelected);
-            // console.log(questionDB[questionNumber].correctAnswer);
+
+            // Stop the timer
+            timer.stop();
 
             // Check for winning round
             if (whichAnswerSelected == questionDB[questionNumber].correctAnswer) {
@@ -177,11 +178,15 @@ $(document).ready(function() {
                     // Show answer set
                     showPossibleAnswers(questionNumber);
 
+                    // Reset and start the timer
+                    timer.reset();
+                    timer.start();
+
                 }); // End start start button on click event
             } // End of wrapItUp function
         } // End check for end of game
 
-        // Game is to continue -- BE SURE TO INCLUDE A DELAY TIMER IF GAME IS TO CONTINUE, FIRST 
+        // Game is to continue
         else {
 
             // Delay before next question -- five seconds
@@ -191,6 +196,8 @@ $(document).ready(function() {
                 showTimeRemaining();                    // Show time remaining
                 showQuestion(questionNumber);           // Display next question
                 showPossibleAnswers(questionNumber);    // Show answer set
+                timer.reset();                          // Reset the timer
+                timer.start();                          // Start the timer
             }
         }
     }; // End of updateGameState function
@@ -220,6 +227,9 @@ $(document).ready(function() {
         // Show answer set
         showPossibleAnswers(questionNumber);
 
+        // Start the timer
+        timer.start();
+
     }); // End start start button on click event
 
     // Show time remaining function
@@ -230,8 +240,50 @@ $(document).ready(function() {
         timeDisplay.html("Time Remaining: <span id='time-remaining'></span> Seconds");
         $("#content").append(timeDisplay);
         $("#content").append("<hr></hr>");
-        $("#time-remaining").text(timeRemaining);
-    }; // End ShowTimeRemaining function
+        $("#time-remaining").text(timer.time);
 
+    } // End ShowTimeRemaining function
+
+    // Timer object
+    var timer = {
+
+        time: 30,
+      
+        reset: function() {
+          timer.time = 30;                          // Reset to 30 seconds
+          $("#time-remaining").text(timer.time);    // Update time remaining display
+        },
+      
+        start: function() {
+          //  Use setInterval to start the count here and set the timer to running
+          if (!clockRunning) {
+            intervalId = setInterval(timer.count, 1 * 1000);
+          }
+          clockRunning = true;
+        },
+
+        stop: function() {
+          //  Use clearInterval to stop the count here and set the timer to not be running
+          clearInterval(intervalId); 
+          clockRunning = false;
+        },
+      
+        count: function() {
+          timer.time--;                             //  Decrement time by 1
+          $("#time-remaining").text(timer.time);    // Update time remaining display
+
+          // Check to see if timer has expired
+          if (timer.time === 0) {
+              // SKIP TO NEXT THING AFTER SHOWING OUT OF TIME MESSAGE
+
+
+
+
+
+              
+          }
+        }
+
+    } // End timer object
 
 }); // End document.ready
