@@ -16,6 +16,7 @@ $(document).ready(function() {
     // Timing variables
     let intervalID;                     // Holds setInterval that runs timer
     let clockRunning = false;           // Timer flag for countdown
+    // let outOfTime = false;              // Flag for timer out of time
 
     // Array of trivia questions
     var questionDB = [
@@ -122,6 +123,7 @@ $(document).ready(function() {
             updateGameState();
 
         }); // End handle answer selection on click event
+
     } // End of showPossibleAnswers function
 
     // Update game state to advance question or end game 
@@ -166,21 +168,8 @@ $(document).ready(function() {
                     numberOfWrongAnswers = 0;       // Counter for player's number of wrong
                     timeRemaining = 30;             // Count down time remaining in question selection
 
-                    // Clear all content
-                    $("#content").empty();
-
-                    // Show time remaining
-                    showTimeRemaining();
-
-                    // Display first question
-                    showQuestion(questionNumber);
-
-                    // Show answer set
-                    showPossibleAnswers(questionNumber);
-
-                    // Reset and start the timer
-                    timer.reset();
-                    timer.start();
+                    // Setup next question
+                    setupNextQuestion();
 
                 }); // End start start button on click event
             } // End of wrapItUp function
@@ -192,15 +181,31 @@ $(document).ready(function() {
             // Delay before next question -- five seconds
             setTimeout(nextQuestion, 1000 * 5);
             function nextQuestion() {
-                $("#content").empty();                  // Clear content
-                showTimeRemaining();                    // Show time remaining
-                showQuestion(questionNumber);           // Display next question
-                showPossibleAnswers(questionNumber);    // Show answer set
-                timer.reset();                          // Reset the timer
-                timer.start();                          // Start the timer
+                setupNextQuestion();
             }
         }
     }; // End of updateGameState function
+
+    // Setup next question function
+    function setupNextQuestion() {
+
+        // Clear all content
+        $("#content").empty();
+
+        // Show time remaining
+        showTimeRemaining();
+
+        // Display first question
+        showQuestion(questionNumber);
+
+        // Show answer set
+        showPossibleAnswers(questionNumber);
+
+        // Reset and start the timer
+        timer.reset();
+        timer.start();
+
+    } // End of setup next question function
 
 
     // On page load -- generate and show start button
@@ -272,17 +277,37 @@ $(document).ready(function() {
           timer.time--;                             //  Decrement time by 1
           $("#time-remaining").text(timer.time);    // Update time remaining display
 
-          // Check to see if timer has expired
+          // Check to see if timer has expired and display
           if (timer.time === 0) {
-              // SKIP TO NEXT THING AFTER SHOWING OUT OF TIME MESSAGE
 
+              // Stop timer
+              timer.stop();
 
+              // Update score tracking
+              numberOfWrongAnswers++;
 
+              // Clear all content and show time remaining
+              $("#content").empty();
+              showTimeRemaining();
 
+              // Show incorrect
+            var outOfTimeDisplay = $("<h2>").addClass("p-1");
+            outOfTimeDisplay.html("Out of Time!");
 
-              
+            // Add the correct answer
+            var theAnswerWas = $("<h3>").addClass("p-1");
+            var correctIndex = questionDB[questionNumber].correctAnswer;
+            theAnswerWas.html("The correct answer was: <br>" + questionDB[questionNumber].answers[correctIndex]);
+            outOfTimeDisplay.append(theAnswerWas);
+
+            $("#content").append(outOfTimeDisplay);
+            // INCLUDE IMAGE LATER
+        
+            // Update game state to next question or end game
+            updateGameState();    
           }
-        }
+
+        } // End start.count function
 
     } // End timer object
 
