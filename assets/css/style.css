@@ -1,4 +1,9 @@
-/* TriviaGame by WBM, 10/28/18, style.css file */
+/* TriviaGame by WBM, 10/28/18, style.css file -- Totally Spacey Trivia */
+
+body {
+    /* Hubble Ultra Deep Field 1920x1200 wallpaper (968.9 kB) */
+    background-image: url("https://cdn.spacetelescope.org/archives/images/wallpaper4/heic0611b.jpg");
+}
 
 .btn {
     display: block;
@@ -7,6 +12,12 @@
 h1, h2, h3, button {
     margin: auto;
     text-align: center;
+    color: white;
+    background-color: black;
+}
+
+.answer-button {
+    margin: 15px auto;
 }
 
 #start-button, #restart-button {

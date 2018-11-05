@@ -1,4 +1,4 @@
-// TriviaGame by WBM, 10/28/18, app.js file
+// TriviaGame by WBM, 10/28/18, app.js file -- Totally Spacey Trivia
 
 $(document).ready(function() {
 
@@ -6,17 +6,10 @@ $(document).ready(function() {
     let questionNumber = 0;             // Tracker for which question game is on
     let numberOfCorrectAnswers = 0;     // Counter for player's number of correct answers
     let numberOfWrongAnswers = 0;       // Counter for player's number of wrong
-    let timeRemaining = 30;             // Count down time remaining in question selection
-
-    // Game state
-    // let startUp = true;
-    // let playGame = false;
-    // let startOver = false;
 
     // Timing variables
     let intervalID;                     // Holds setInterval that runs timer
     let clockRunning = false;           // Timer flag for countdown
-    // let outOfTime = false;              // Flag for timer out of time
 
     // Array of trivia questions
     var questionDB = [
@@ -123,7 +116,6 @@ $(document).ready(function() {
             updateGameState();
 
         }); // End handle answer selection on click event
-
     } // End of showPossibleAnswers function
 
     // Update game state to advance question or end game 
@@ -166,7 +158,6 @@ $(document).ready(function() {
                     questionNumber = 0;             // Tracker for which question game is on
                     numberOfCorrectAnswers = 0;     // Counter for player's number of correct answers
                     numberOfWrongAnswers = 0;       // Counter for player's number of wrong
-                    timeRemaining = 30;             // Count down time remaining in question selection
 
                     // Setup next question
                     setupNextQuestion();
@@ -206,7 +197,6 @@ $(document).ready(function() {
         timer.start();
 
     } // End of setup next question function
-
 
     // On page load -- generate and show start button
     var startButton = $("<button>");
@@ -252,7 +242,7 @@ $(document).ready(function() {
     // Timer object
     var timer = {
 
-        time: 30,
+        time: 30,           // 30 second timer key-value pair
       
         reset: function() {
           timer.time = 30;                          // Reset to 30 seconds
@@ -260,6 +250,7 @@ $(document).ready(function() {
         },
       
         start: function() {
+
           //  Use setInterval to start the count here and set the timer to running
           if (!clockRunning) {
             intervalId = setInterval(timer.count, 1 * 1000);
@@ -268,12 +259,14 @@ $(document).ready(function() {
         },
 
         stop: function() {
+
           //  Use clearInterval to stop the count here and set the timer to not be running
           clearInterval(intervalId); 
           clockRunning = false;
         },
       
         count: function() {
+
           timer.time--;                             //  Decrement time by 1
           $("#time-remaining").text(timer.time);    // Update time remaining display
 
@@ -305,10 +298,9 @@ $(document).ready(function() {
         
             // Update game state to next question or end game
             updateGameState();    
-          }
 
+          } // End if check for expired timer
         } // End start.count function
-
     } // End timer object
 
 }); // End document.ready
