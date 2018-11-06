@@ -24,3 +24,9 @@ h1, h2, h3, button {
     width: 30%;
     font-size: 30px;
 }
+
+img {
+    display: block;
+    margin: auto;
+    width: 380px;
+}

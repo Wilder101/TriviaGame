@@ -3,36 +3,42 @@
 $(document).ready(function() {
 
     // Variables
-    let questionNumber = 0;             // Tracker for which question game is on
+    let questionNumber         = 0;     // Tracker for which question game is on
     let numberOfCorrectAnswers = 0;     // Counter for player's number of correct answers
-    let numberOfWrongAnswers = 0;       // Counter for player's number of wrong
-    let numberOfUnaswered = 0;          // Counter for player's number of unanswered questions
+    let numberOfWrongAnswers   = 0;     // Counter for player's number of wrong
+    let numberOfUnaswered      = 0;     // Counter for player's number of unanswered questions
 
     // Array of trivia questions
     var questionDB = [
         {question: "What is the closest star to our own sun?",  
         answers: ["Alpha Centauri", "Proxima Centauri", "Bernards Star", "Ross 248"],
-        correctAnswer: 1},
+        correctAnswer: 1,
+        answerURL: "https://starguyspeaks.files.wordpress.com/2013/09/proxima_2010.gif"},
 
         {question: "What is the name for meteoroids that survive entry through the atmosphere and reach Earth’s surface?",  
         answers: ["Meteorites", "Meteoroids", "Meteors", "Perseids"],
-        correctAnswer: 0},
+        correctAnswer: 0,
+        answerURL: "https://media.giphy.com/media/l46CvyAn1oBTOZtZK/giphy.gif"},
 
         {question: "Which U.S. President made the first telephone call to the moon?",  
         answers: ["John F. Kennedy", "Lyndon B. Johnson", "Richard Nixon", "Ronald Regan"],
-        correctAnswer: 2},
+        correctAnswer: 2,
+        answerURL: "https://media1.tenor.com/images/984ed8627caab6db7e95e9f33ce12a10/tenor.gif?itemid=4993141"},
 
         {question: "In our solar system, which planet has the shortest day?",  
         answers: ["Mercury", "Earth", "Neptune", "Jupiter"],
-        correctAnswer: 3},
+        correctAnswer: 3,
+        answerURL: "https://media.giphy.com/media/QJ6l2A59FQyGY/giphy.gif"},
 
         {question: "What is the farthest human-made object from planet Earth?",  
         answers: ["Voyager 1", "Voyager 2", "Pioneer 10", "Hubble Space Telescope"],
-        correctAnswer: 0},
+        correctAnswer: 0,
+        answerURL: "https://media.giphy.com/media/lAyX8WqkeonmM/giphy.gif"},
 
         {question: "SpaceX was founded by what South African-born inventor?",  
         answers: ["Charlize Theron", "Elon Musk", "Nelson Mandela", "Allan Cormack"],
-        correctAnswer: 1}
+        correctAnswer: 1,
+        answerURL: "https://thumbs.gfycat.com/BelatedWindyCentipede-max-1mb.gif"}
     ];
 
     // Show a question
@@ -82,7 +88,7 @@ $(document).ready(function() {
                 var correctDisplay = $("<h2>").addClass("p-1");
                 correctDisplay.text("Correct!");
                 $("#content").append(correctDisplay);
-                // INCLUDE IMAGE LATER
+                showAnswerImage();
             }
             // Otherwise guess was a miss
             else {
@@ -103,9 +109,8 @@ $(document).ready(function() {
                 var correctIndex = questionDB[questionNumber].correctAnswer;
                 theAnswerWas.html("The correct answer was: <br>" + questionDB[questionNumber].answers[correctIndex]);
                 incorrectDisplay.append(theAnswerWas);
-
                 $("#content").append(incorrectDisplay);
-                // INCLUDE IMAGE LATER
+                showAnswerImage();
             }
 
             // Update game state to next question or end game
@@ -294,8 +299,9 @@ $(document).ready(function() {
                 theAnswerWas.html("The correct answer was: <br>" + questionDB[questionNumber].answers[correctIndex]);
                 outOfTimeDisplay.append(theAnswerWas);
 
+                // Add out of time display and answer image
                 $("#content").append(outOfTimeDisplay);
-                // INCLUDE IMAGE LATER
+                showAnswerImage();
         
                 // Update game state to next question or end game
                 updateGameState();    
@@ -303,5 +309,18 @@ $(document).ready(function() {
             } // End if check for expired timer
         } // End start.count function
     } // End timer object
+
+    // Show answer image function
+    function showAnswerImage() {
+
+        // Create an image element
+        var anImage = $("<img>").addClass("p-1");
+        anImage.attr("src", questionDB[questionNumber].answerURL);
+        anImage.prepend("<br>");
+
+        // Add image to content
+        $("#content").append($("<br>"));
+        $("#content").append(anImage);
+    }
 
 }); // End document.ready
