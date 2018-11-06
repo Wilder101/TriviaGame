@@ -6,10 +6,7 @@ $(document).ready(function() {
     let questionNumber = 0;             // Tracker for which question game is on
     let numberOfCorrectAnswers = 0;     // Counter for player's number of correct answers
     let numberOfWrongAnswers = 0;       // Counter for player's number of wrong
-
-    // Timing variables
-    let intervalID;                     // Holds setInterval that runs timer
-    let clockRunning = false;           // Timer flag for countdown
+    let numberOfUnaswered = 0;          // Counter for player's number of unanswered questions
 
     // Array of trivia questions
     var questionDB = [
@@ -56,7 +53,6 @@ $(document).ready(function() {
         for (let i = 0; i < questionDB[0].answers.length; i++) {
             var answerButton = $("<button>");
             answerButton.addClass("btn btn-lg btn-light answer-button");
-            // answerButton.attr("id", "answer-button");
             answerButton.attr("type", "button");
             answerButton.attr("data-value", i);
             answerButton.text(questionDB[whichQuestion].answers[i]);
@@ -139,7 +135,8 @@ $(document).ready(function() {
                 let showScoreResults = $("<h2>").addClass("p-1");
                 showScoreResults.html("Thank you for playing. <br><br>");
                 showScoreResults.append("Correct answers: " + numberOfCorrectAnswers + "<br>");
-                showScoreResults.append("Incorrect answers: " + numberOfWrongAnswers);
+                showScoreResults.append("Incorrect answers: " + numberOfWrongAnswers + "<br>");
+                showScoreResults.append("Unanswered: " + numberOfUnaswered);
                 $("#content").append(showScoreResults);
                 
                 // Restart game and button
@@ -158,6 +155,7 @@ $(document).ready(function() {
                     questionNumber = 0;             // Tracker for which question game is on
                     numberOfCorrectAnswers = 0;     // Counter for player's number of correct answers
                     numberOfWrongAnswers = 0;       // Counter for player's number of wrong
+                    numberOfUnaswered = 0;          // Counter for player's number of unanswered questions
 
                     // Setup next question
                     setupNextQuestion();
@@ -224,7 +222,7 @@ $(document).ready(function() {
 
         // Start the timer
         timer.start();
-
+        
     }); // End start start button on click event
 
     // Show time remaining function
@@ -242,7 +240,10 @@ $(document).ready(function() {
     // Timer object
     var timer = {
 
-        time: 30,           // 30 second timer key-value pair
+        // Timing variables
+        time: 30,                   // 30 second timer key-value pair
+        intervalID: 0,              // Holds setInterval that runs timer
+        clockRunning: false,        // Timer flag for countdown
       
         reset: function() {
           timer.time = 30;                          // Reset to 30 seconds
@@ -253,7 +254,7 @@ $(document).ready(function() {
 
           //  Use setInterval to start the count here and set the timer to running
           if (!clockRunning) {
-            intervalId = setInterval(timer.count, 1 * 1000);
+            timer.intervalId = setInterval(timer.count, 1 * 1000);
           }
           clockRunning = true;
         },
@@ -261,45 +262,45 @@ $(document).ready(function() {
         stop: function() {
 
           //  Use clearInterval to stop the count here and set the timer to not be running
-          clearInterval(intervalId); 
+          clearInterval(timer.intervalId); 
           clockRunning = false;
         },
       
         count: function() {
 
-          timer.time--;                             //  Decrement time by 1
-          $("#time-remaining").text(timer.time);    // Update time remaining display
+            timer.time--;                             //  Decrement time by 1
+            $("#time-remaining").text(timer.time);    // Update time remaining display
 
-          // Check to see if timer has expired and display
-          if (timer.time === 0) {
+            // Check to see if timer has expired and display
+            if (timer.time === 0) {
 
-              // Stop timer
-              timer.stop();
+                // Stop timer
+                timer.stop();
 
-              // Update score tracking
-              numberOfWrongAnswers++;
+                // Update score tracking
+                numberOfUnaswered++;
 
-              // Clear all content and show time remaining
-              $("#content").empty();
-              showTimeRemaining();
+                // Clear all content and show time remaining
+                $("#content").empty();
+                showTimeRemaining();
 
-              // Show incorrect
-            var outOfTimeDisplay = $("<h2>").addClass("p-1");
-            outOfTimeDisplay.html("Out of Time!");
+                // Show incorrect
+                var outOfTimeDisplay = $("<h2>").addClass("p-1");
+                outOfTimeDisplay.html("Out of Time!");
 
-            // Add the correct answer
-            var theAnswerWas = $("<h3>").addClass("p-1");
-            var correctIndex = questionDB[questionNumber].correctAnswer;
-            theAnswerWas.html("The correct answer was: <br>" + questionDB[questionNumber].answers[correctIndex]);
-            outOfTimeDisplay.append(theAnswerWas);
+                // Add the correct answer
+                var theAnswerWas = $("<h3>").addClass("p-1");
+                var correctIndex = questionDB[questionNumber].correctAnswer;
+                theAnswerWas.html("The correct answer was: <br>" + questionDB[questionNumber].answers[correctIndex]);
+                outOfTimeDisplay.append(theAnswerWas);
 
-            $("#content").append(outOfTimeDisplay);
-            // INCLUDE IMAGE LATER
+                $("#content").append(outOfTimeDisplay);
+                // INCLUDE IMAGE LATER
         
-            // Update game state to next question or end game
-            updateGameState();    
+                // Update game state to next question or end game
+                updateGameState();    
 
-          } // End if check for expired timer
+            } // End if check for expired timer
         } // End start.count function
     } // End timer object
 
