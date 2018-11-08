@@ -258,17 +258,17 @@ $(document).ready(function() {
         start: function() {
 
           //  Use setInterval to start the count here and set the timer to running
-          if (!clockRunning) {
+          if (!timer.clockRunning) {
             timer.intervalId = setInterval(timer.count, 1 * 1000);
           }
-          clockRunning = true;
+          timer.clockRunning = true;
         },
 
         stop: function() {
 
           //  Use clearInterval to stop the count here and set the timer to not be running
           clearInterval(timer.intervalId); 
-          clockRunning = false;
+          timer.clockRunning = false;
         },
       
         count: function() {
@@ -316,6 +316,8 @@ $(document).ready(function() {
         // Create an image element
         var anImage = $("<img>").addClass("p-1");
         anImage.attr("src", questionDB[questionNumber].answerURL);
+        var theCorrectAnswer = questionDB[questionNumber].correctAnswer;
+        anImage.attr("alt", questionDB[questionNumber].answers[theCorrectAnswer]);
         anImage.prepend("<br>");
 
         // Add image to content
